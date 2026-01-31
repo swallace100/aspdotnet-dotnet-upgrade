@@ -81,6 +81,7 @@ dotnet --list-runtimes
 
 - aspnet/HttpClient/BingTranslateSample
 - aspnet/HttpClient/WorldBankSample
+- aspnet/Identity/AspNet.Identity.MySQL
 
 ## License
 
