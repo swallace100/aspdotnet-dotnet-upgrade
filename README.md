@@ -77,6 +77,11 @@ To verify installed runtimes:
 dotnet --list-runtimes
 ```
 
+## List of Converted Apps
+
+- aspnet/HttpClient/BingTranslateSample
+- aspnet/HttpClient/WorldBankSample
+
 ## License
 
 MIT — free to use for learning, teaching, and professional migrations.
