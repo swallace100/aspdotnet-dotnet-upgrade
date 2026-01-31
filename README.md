@@ -17,6 +17,7 @@ The goal is to provide real working examples that show the upgrade path step-by-
 
 ## Repository Structure
 
+```code
 ASPDOTNET-DOTNET-UPGRADE
 │
 ├── legacy-apps/ # Original .NET Framework sample applications
@@ -36,6 +37,7 @@ ASPDOTNET-DOTNET-UPGRADE
 ├── CODE-OF-CONDUCT.md
 ├── LICENSE
 └── README.md # You are here
+```
 
 ## Tech Stack
 
