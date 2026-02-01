@@ -1,0 +1,86 @@
+@page "/account/login"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using CustomMembershipSample.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+<PageTitle>Log On</PageTitle>
+
+<h2>Log On</h2>
+<p>
+    Please enter your user name and password.
+    <a href="/account/register">Register</a> if you don't have an account.
+</p>
+
+@if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="validation-summary-errors">@_error</div>
+}
+
+<EditForm Model="_model" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <fieldset>
+        <legend>Account Information</legend>
+
+        <div class="editor-label">
+            <label for="username">User name</label>
+        </div>
+        <div class="editor-field">
+            <InputText id="username" class="form-control" @bind-Value="_model.UserName" />
+            <ValidationMessage For="@(() => _model.UserName)" />
+        </div>
+
+        <div class="editor-label">
+            <label for="password">Password</label>
+        </div>
+        <div class="editor-field">
+            <InputText id="password" type="password" class="form-control" @bind-Value="_model.Password" />
+            <ValidationMessage For="@(() => _model.Password)" />
+        </div>
+
+        <div class="editor-label">
+            <InputCheckbox id="remember" @bind-Value="_model.RememberMe" />
+            <label for="remember">Remember me</label>
+        </div>
+
+        <p>
+            <button type="submit">Log On</button>
+        </p>
+    </fieldset>
+</EditForm>
+
+@code {
+    private string? _error;
+
+    private LoginModel _model = new();
+
+    private async Task HandleLogin()
+    {
+        _error = null;
+
+        var result = await SignInManager.PasswordSignInAsync(
+        _model.UserName, _model.Password, _model.RememberMe, lockoutOnFailure: false);
+
+        if (result.Succeeded)
+        {
+            Nav.NavigateTo("/");
+            return;
+        }
+
+        _error = "Login was unsuccessful. Please correct the errors and try again.";
+    }
+
+    private sealed class LoginModel
+    {
+        [Required]
+        public string UserName { get; set; } = "";
+
+        [Required]
+        public string Password { get; set; } = "";
+
+        public bool RememberMe { get; set; }
+    }
+}

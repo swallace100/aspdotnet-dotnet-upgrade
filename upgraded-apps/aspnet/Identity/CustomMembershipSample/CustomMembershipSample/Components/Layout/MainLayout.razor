@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <header>
+        <div id="title">
+            <h1>My Blazor Application</h1>
+        </div>
+
+        <div id="logindisplay">
+            <LoginDisplay />
+        </div>
+
+        <nav>
+            <ul id="menu">
+                <li>
+                    <NavLink href="/" Match="NavLinkMatch.All">Home</NavLink>
+                </li>
+                <li>
+                    <NavLink href="/about">About</NavLink>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="main">
+        @Body
+    </section>
+
+    <footer></footer>
+</div>

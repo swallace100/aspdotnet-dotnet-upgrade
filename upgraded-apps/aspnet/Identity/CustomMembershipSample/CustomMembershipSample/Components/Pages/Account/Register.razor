@@ -1,0 +1,117 @@
+@page "/account/register"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using CustomMembershipSample.Data
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+<PageTitle>Register</PageTitle>
+
+<h2>Create a New Account</h2>
+<p>Use the form below to create a new account.</p>
+
+@if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="validation-summary-errors">@_error</div>
+}
+
+<EditForm Model="_model" OnValidSubmit="HandleRegister">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <fieldset>
+        <legend>Account Information</legend>
+
+        <div class="editor-label"><label>User name</label></div>
+        <div class="editor-field">
+            <InputText @bind-Value="_model.UserName" />
+            <ValidationMessage For="@(() => _model.UserName)" />
+        </div>
+
+        <div class="editor-label"><label>Email</label></div>
+        <div class="editor-field">
+            <InputText @bind-Value="_model.Email" />
+            <ValidationMessage For="@(() => _model.Email)" />
+        </div>
+
+        <div class="editor-label"><label>Password</label></div>
+        <div class="editor-field">
+            <InputText type="password" @bind-Value="_model.Password" />
+            <ValidationMessage For="@(() => _model.Password)" />
+        </div>
+
+        <div class="editor-label"><label>Confirm password</label></div>
+        <div class="editor-field">
+            <InputText type="password" @bind-Value="_model.ConfirmPassword" />
+            <ValidationMessage For="@(() => _model.ConfirmPassword)" />
+        </div>
+
+        <div class="editor-label"><label>City</label></div>
+        <div class="editor-field">
+            <InputText @bind-Value="_model.City" />
+        </div>
+
+        <div class="editor-label"><label>State</label></div>
+        <div class="editor-field">
+            <InputText @bind-Value="_model.State" />
+        </div>
+
+        <div class="editor-label"><label>Country</label></div>
+        <div class="editor-field">
+            <InputText @bind-Value="_model.Country" />
+        </div>
+
+        <p>
+            <button type="submit">Register</button>
+        </p>
+    </fieldset>
+</EditForm>
+
+@code {
+    private string? _error;
+    private RegisterModel _model = new();
+
+    private async Task HandleRegister()
+    {
+        _error = null;
+
+        if (_model.Password != _model.ConfirmPassword)
+        {
+            _error = "Password and confirmation do not match.";
+            return;
+        }
+
+        var user = new ApplicationUser
+        {
+            UserName = _model.UserName,
+            Email = _model.Email,
+            City = _model.City,
+            State = _model.State,
+            Country = _model.Country
+        };
+
+        var result = await UserManager.CreateAsync(user, _model.Password);
+
+        if (result.Succeeded)
+        {
+            await SignInManager.SignInAsync(user, isPersistent: false);
+            Nav.NavigateTo("/");
+            return;
+        }
+
+        _error = string.Join(" ", result.Errors.Select(e => e.Description));
+    }
+
+    private sealed class RegisterModel
+    {
+        [Required] public string UserName { get; set; } = "";
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required] public string Password { get; set; } = "";
+        [Required] public string ConfirmPassword { get; set; } = "";
+
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? Country { get; set; }
+    }
+}
