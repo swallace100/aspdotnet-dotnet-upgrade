@@ -18,7 +18,7 @@
     <div class="validation-summary-errors">@_error</div>
 }
 
-<EditForm Model="_model" OnValidSubmit="HandleLogin">
+<EditForm Model="_model" OnValidSubmit="HandleLogin" FormName="login" method="post" Enhance>
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -29,7 +29,7 @@
             <label for="username">User name</label>
         </div>
         <div class="editor-field">
-            <InputText id="username" class="form-control" @bind-Value="_model.UserName" />
+            <InputText id="username" name="UserName" class="form-control" @bind-Value="_model.UserName" />
             <ValidationMessage For="@(() => _model.UserName)" />
         </div>
 
@@ -37,12 +37,13 @@
             <label for="password">Password</label>
         </div>
         <div class="editor-field">
-            <InputText id="password" type="password" class="form-control" @bind-Value="_model.Password" />
+            <InputText id="password" name="Password" type="password" class="form-control"
+                @bind-Value="_model.Password" />
             <ValidationMessage For="@(() => _model.Password)" />
         </div>
 
         <div class="editor-label">
-            <InputCheckbox id="remember" @bind-Value="_model.RememberMe" />
+            <InputCheckbox id="remember" name="RememberMe" @bind-Value="_model.RememberMe" />
             <label for="remember">Remember me</label>
         </div>
 
@@ -66,7 +67,7 @@
 
         if (result.Succeeded)
         {
-            Nav.NavigateTo("/");
+            Nav.NavigateTo("/", forceLoad: true);
             return;
         }
 

@@ -28,3 +28,10 @@ dotnet ef migrations add InitialIdentity
 dotnet ef database update
 
 ```
+
+## Run the application
+
+```PowerShell
+cd CustomMembershipSample
+dotnet run
+```
