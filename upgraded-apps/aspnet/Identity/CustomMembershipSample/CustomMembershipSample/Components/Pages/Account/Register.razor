@@ -16,55 +16,55 @@
     <div class="validation-summary-errors">@_error</div>
 }
 
-<EditForm Model="_model" OnValidSubmit="HandleRegister">
+<EditForm Model="_model" OnValidSubmit="HandleRegister" FormName="register" method="post" Enhance>
     <DataAnnotationsValidator />
-    <ValidationSummary />
+    <ValidationSummary class="validation-summary-errors" />
 
     <fieldset>
         <legend>Account Information</legend>
 
         <div class="editor-label"><label>User name</label></div>
         <div class="editor-field">
-            <InputText @bind-Value="_model.UserName" />
+            <InputText name="UserName" @bind-Value="_model.UserName" />
             <ValidationMessage For="@(() => _model.UserName)" />
         </div>
 
         <div class="editor-label"><label>Email</label></div>
         <div class="editor-field">
-            <InputText @bind-Value="_model.Email" />
+            <InputText name="Email" @bind-Value="_model.Email" />
             <ValidationMessage For="@(() => _model.Email)" />
         </div>
 
         <div class="editor-label"><label>Password</label></div>
         <div class="editor-field">
-            <InputText type="password" @bind-Value="_model.Password" />
+            <InputText name="Password" type="password" @bind-Value="_model.Password" />
             <ValidationMessage For="@(() => _model.Password)" />
         </div>
 
         <div class="editor-label"><label>Confirm password</label></div>
         <div class="editor-field">
-            <InputText type="password" @bind-Value="_model.ConfirmPassword" />
+            <InputText name="ConfirmPassword" type="password" @bind-Value="_model.ConfirmPassword" />
             <ValidationMessage For="@(() => _model.ConfirmPassword)" />
         </div>
 
         <div class="editor-label"><label>City</label></div>
         <div class="editor-field">
-            <InputText @bind-Value="_model.City" />
+            <InputText name="City" @bind-Value="_model.City" />
         </div>
 
         <div class="editor-label"><label>State</label></div>
         <div class="editor-field">
-            <InputText @bind-Value="_model.State" />
+            <InputText name="State" @bind-Value="_model.State" />
+            <ValidationMessage For="@(() => _model.State)" />
         </div>
 
         <div class="editor-label"><label>Country</label></div>
         <div class="editor-field">
-            <InputText @bind-Value="_model.Country" />
+            <InputText name="Country" @bind-Value="_model.Country" />
+            <ValidationMessage For="@(() => _model.Country)" />
         </div>
 
-        <p>
-            <button type="submit">Register</button>
-        </p>
+        <p><button type="submit">Register</button></p>
     </fieldset>
 </EditForm>
 
@@ -82,21 +82,23 @@
             return;
         }
 
+        var state = _model.State.Trim().ToUpperInvariant();
+        var country = _model.Country.Trim().ToUpperInvariant();
+
         var user = new ApplicationUser
         {
             UserName = _model.UserName,
             Email = _model.Email,
             City = _model.City,
-            State = _model.State,
-            Country = _model.Country
+            State = state,
+            Country = country
         };
 
         var result = await UserManager.CreateAsync(user, _model.Password);
 
         if (result.Succeeded)
         {
-            await SignInManager.SignInAsync(user, isPersistent: false);
-            Nav.NavigateTo("/");
+            Nav.NavigateTo("/account/login", forceLoad: true);
             return;
         }
 
@@ -111,7 +113,15 @@
         [Required] public string ConfirmPassword { get; set; } = "";
 
         public string? City { get; set; }
-        public string? State { get; set; }
-        public string? Country { get; set; }
+
+        [Required]
+        [StringLength(2, MinimumLength = 2, ErrorMessage = "State must be a 2-letter code (e.g., CA).")]
+        [RegularExpression("^[A-Za-z]{2}$", ErrorMessage = "State must be letters only (e.g., CA).")]
+        public string State { get; set; } = "";
+
+        [Required]
+        [StringLength(2, MinimumLength = 2, ErrorMessage = "Country must be a 2-letter code (e.g., US, JP).")]
+        [RegularExpression("^[A-Za-z]{2}$", ErrorMessage = "Country must be letters only (e.g., US, JP).")]
+        public string Country { get; set; } = "";
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Razor Components (once)
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -22,39 +22,45 @@ builder.Services
     .AddEntityFrameworkStores<AppIdentityDbContext>()
     .AddDefaultTokenProviders();
 
+// AuthZ + Auth state for Blazor UI bits
+builder.Services.AddAuthorization();
+builder.Services.AddCascadingAuthenticationState();
 
-// Auth cookies
+// Auth cookies paths
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/account/login";
     options.AccessDeniedPath = "/account/denied";
 });
 
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
+
+// If you want status-code re-exec, keep it here:
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
+
+// HTTPS redirect: call ONCE
 app.UseHttpsRedirection();
 
-// Razor Components middlewares and auth
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseAntiforgery();
 
+// Authentication/Authorization BEFORE endpoints
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Map endpoints AFTER middleware
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+   .AddInteractiveServerRenderMode();
 
 app.Run();

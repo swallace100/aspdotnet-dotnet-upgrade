@@ -1,324 +1,294 @@
-﻿/*----------------------------------------------------------
-The base color for this template is #5c87b2. If you'd like
-to use a different color start by replacing all instances of
-#5c87b2 with your new color.
-----------------------------------------------------------*/
+﻿/* =========================================================
+   Modern lightweight theme (no framework)
+   Works with your existing IDs/classes:
+   #title, #logindisplay, #menu, #main, .editor-label, .editor-field,
+   .validation-summary-errors, etc.
+   ========================================================= */
+
+:root{
+  --bg: #0b1220;
+  --surface: rgba(255,255,255,.06);
+  --surface-2: rgba(255,255,255,.10);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --border: rgba(255,255,255,.12);
+
+  --brand: #7c3aed;      /* violet */
+  --brand-2: #22c55e;    /* green accent if needed */
+  --danger: #ef4444;
+
+  --shadow: 0 10px 35px rgba(0,0,0,.35);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --container: 980px;
+  --gap: 16px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
 body {
-    background-color: #5c87b2;
-    font-size: .85em;
-    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
-    margin: 0;
-    padding: 0;
-    color: #696969;
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(124,58,237,.35), transparent 60%),
+    radial-gradient(900px 500px at 80% 0%, rgba(34,197,94,.18), transparent 55%),
+    radial-gradient(700px 500px at 50% 100%, rgba(59,130,246,.14), transparent 60%),
+    var(--bg);
+  line-height: 1.55;
 }
 
-a:link {
-    color: #034af3;
-    text-decoration: underline;
+a {
+  color: rgba(255,255,255,.92);
+  text-decoration: none;
 }
-
-a:visited {
-    color: #505abc;
-}
-
 a:hover {
-    color: #1d60ff;
-    text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-a:active {
-    color: #12eb87;
-}
-
-p, ul {
-    margin-bottom: 20px;
-    line-height: 1.6em;
-}
-
-header,
-footer,
-nav,
-section {
-    display: block;
-}
-
-/* HEADINGS   
-----------------------------------------------------------*/
-h1, h2, h3, h4, h5, h6 {
-    font-size: 1.5em;
-    color: #000;
-}
-
-h1 {
-    font-size: 2em;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
-h2 {
-    padding: 0 0 10px 0;
-}
-
-h3 {
-    font-size: 1.2em;
-}
-
-h4 {
-    font-size: 1.1em;
-}
-
-h5, h6 {
-    font-size: 1em;
-}
-
-/* PRIMARY LAYOUT ELEMENTS   
-----------------------------------------------------------*/
-
-/* you can specify a greater or lesser percentage for the 
-page width. Or, you can specify an exact pixel width. */
+/* Layout wrapper */
 .page {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+  /* IMPORTANT: stack header above main */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-header, #header {
-    position: relative;
-    margin-bottom: 0px;
-    color: #000;
-    padding: 0;
+/* Header: sticky modern bar */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(11,18,32,.75);
+  border-bottom: 1px solid var(--border);
 }
 
-header h1, #header h1 {
-    font-weight: bold;
-    padding: 5px 0;
-    margin: 0;
-    color: #fff;
-    border: none;
-    line-height: 2em;
-    font-size: 32px !important;
-    text-shadow: 1px 1px 2px #111;
+header > * {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 14px 18px;
 }
 
-#main {
-    padding: 30px 30px 15px 30px;
-    background-color: #fff;
-    -webkit-border-radius: 4px 0 0 0;
-    -moz-border-radius: 4px 0 0 0;
-    border-radius: 4px 0 0 0;
+/* Title */
+#title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: .2px;
 }
 
-footer, 
-#footer {
-    background-color: #fff;
-    color: #999;
-    padding: 10px 0;
-    text-align: center;
-    line-height: normal;
-    margin: 0 0 30px 0;
-    font-size: .9em;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 4px;
+/* Arrange title + login display on one row */
+header {
+  display: block;
+}
+header > :first-child {
+  /* the container that holds title/logindisplay/menu may be inside your header;
+     if not, this still behaves fine. */
 }
 
-/* TAB MENU   
-----------------------------------------------------------*/
-ul#menu {
-    border-bottom: 1px #5C87B2 solid;
-    padding: 0 0 2px;
-    position: relative;
-    margin: 0;
-    text-align: right;
-}
-
-ul#menu li {
-    display: inline;
-    list-style: none;
-}
-
-ul#menu li#greeting {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    color: #fff;
-}
-
-ul#menu li a {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
-    border-radius: 4px 4px 0 0;
-}
-
-ul#menu li a:hover {
-    background-color: #fff;
-    text-decoration: none;
-}
-
-ul#menu li a:active {
-    background-color: #a6e2a6;
-    text-decoration: none;
-}
-
-ul#menu li.selected a {
-    background-color: #fff;
-    color: #000;
-}
-
-/* FORM LAYOUT ELEMENTS   
-----------------------------------------------------------*/
-
-fieldset {
-    border: 1px solid #ddd;
-    padding: 0 1.4em 1.4em 1.4em;
-    margin: 0 0 1.5em 0;
-}
-
-legend {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-textarea {
-    min-height: 75px;
-}
-
-input[type="text"], 
-input[type="password"] {
-    border: 1px solid #ccc;
-    padding: 2px;
-    font-size: 1.2em;
-    color: #444;
-    width: 200px;
-}
-
-select {
-    border: 1px solid #ccc;
-    padding: 2px;
-    font-size: 1.2em;
-    color: #444;
-}
-
-input[type="submit"] {
-    font-size: 1.2em;
-    padding: 5px;
-}
-
-/* TABLE
-----------------------------------------------------------*/
-
-table {
-    border: solid 1px #e8eef4;
-    border-collapse: collapse;
-}
-
-table td {
-    padding: 5px;
-    border: solid 1px #e8eef4;
-}
-
-table th {
-    padding: 6px 5px;
-    text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
-}
-
-/* MISC  
-----------------------------------------------------------*/
-.clear {
-    clear: both;
-}
-
-.error {
-    color: Red;
-}
-
-nav, 
-#menucontainer {
-    margin-top: 40px;
-}
-
-div#title {
-    display: block;
-    float: left;
-    text-align: left;
-}
-
+/* Login display (top right) */
 #logindisplay {
-    font-size: 1.1em;
-    display: block;
-    text-align: right;
-    margin: 10px;
-    color: White;
+  float: right; /* keeps compatibility with older markup */
+  margin-top: -36px; /* lightly lifts it to align with title row */
+  font-size: 14px;
+  color: var(--muted);
+}
+#logindisplay a {
+  color: var(--text);
+  font-weight: 600;
 }
 
-#logindisplay a:link {
-    color: white;
-    text-decoration: underline;
+/* Nav menu */
+#menu {
+  list-style: none;
+  margin: 10px 0 0 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-#logindisplay a:visited {
-    color: white;
-    text-decoration: underline;
+#menu li {
+  margin: 0;
+  padding: 0;
 }
 
-#logindisplay a:hover {
-    color: white;
-    text-decoration: none;
+/* NavLink renders <a>; style those */
+#menu a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 999px;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform .06s ease, background .2s ease, border-color .2s ease;
+}
+#menu a:hover {
+  text-decoration: none;
+  background: var(--surface-2);
+  border-color: rgba(255,255,255,.18);
+}
+#menu a:active {
+  transform: translateY(1px);
 }
 
-/* Styles for validation helpers
------------------------------------------------------------*/
-.field-validation-error {
-    color: #ff0000;
+/* Active route class from NavLink is "active" */
+#menu a.active {
+  background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(124,58,237,.18));
+  border-color: rgba(124,58,237,.55);
 }
 
-.field-validation-valid {
-    display: none;
+/* Main content card */
+#main {
+  max-width: var(--container);
+  width: 100%;
+  margin: 22px auto;
+  padding: 22px 22px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-.input-validation-error {
-    border: 1px solid #ff0000;
-    background-color: #ffeeee;
+/* Headings */
+h2 {
+  margin: 0 0 10px 0;
+  font-size: 22px;
+  letter-spacing: .2px;
+}
+p { color: var(--muted); }
+
+/* Forms */
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 16px 0 0 0;
+  background: rgba(255,255,255,.04);
+}
+legend {
+  padding: 0 10px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.editor-label {
+  margin-top: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.editor-field {
+  margin-top: 6px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select,
+.form-control {
+  width: min(520px, 100%);
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255,255,255,.45);
+}
+
+input:focus, textarea:focus, select:focus, .form-control:focus {
+  border-color: rgba(124,58,237,.55);
+  box-shadow: 0 0 0 4px rgba(124,58,237,.18);
+  background: rgba(255,255,255,.08);
+}
+
+button, input[type="submit"] {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(124,58,237,.55);
+  background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(124,58,237,.70));
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 25px rgba(124,58,237,.20);
+  transition: transform .06s ease, filter .15s ease;
+}
+button:hover, input[type="submit"]:hover {
+  filter: brightness(1.05);
+}
+button:active, input[type="submit"]:active {
+  transform: translateY(1px);
+}
+
+label {
+  user-select: none;
+}
+
+/* Validation styling (Blazor + legacy MVC-ish classes) */
+.validation-summary-errors,
+.validation-message {
+  color: #fecaca;
 }
 
 .validation-summary-errors {
-    font-weight: bold;
-    color: #ff0000;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(239,68,68,.35);
+  background: rgba(239,68,68,.12);
 }
 
-.validation-summary-valid {
-    display: none;
+/* Blazor adds .invalid when you use <InputText class="..." /> with validation */
+input.invalid,
+textarea.invalid,
+select.invalid {
+  border-color: rgba(239,68,68,.55);
+  box-shadow: 0 0 0 4px rgba(239,68,68,.12);
 }
 
-/* Styles for editor and display helpers
-----------------------------------------------------------*/
-.display-label, 
-.editor-label {
-    margin: 1em 0 0 0;
+/* Footer */
+footer {
+  max-width: var(--container);
+  width: 100%;
+  margin: 10px auto 18px auto;
+  padding: 0 18px;
+  color: rgba(255,255,255,.45);
+  font-size: 13px;
 }
 
-.display-field, 
-.editor-field {
-    margin: 0.5em 0 0 0;
-}
-
-.text-box {
-    width: 30em;
-}
-
-.text-box.multi-line {
-    height: 6.5em;
-}
-
-.tri-state {
-    width: 6em;
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  #logindisplay {
+    float: none;
+    margin-top: 8px;
+  }
+  #main {
+    margin: 16px 12px;
+    padding: 18px;
+  }
+  #menu {
+    gap: 8px;
+  }
+  #menu a {
+    padding: 9px 12px;
+  }
 }
